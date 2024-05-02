@@ -1,3 +1,5 @@
+from src.models.WinogradScaled import WinogradScaled
+from src.models.StrassenNaiv import StrassenNaive
 from src.models.DocumentoMatrices import LeerMatriz, GeneradorMatrices
 from src.models.ChartGenerator import ChartGenerator
 from src.models.NaivOnArray import NaivOnArray
@@ -38,7 +40,7 @@ def multiplicar_matrices(matrices_filenames):
     Args:
     - matrices_filenames: Lista de nombres de archivos de las matrices a multiplicar.
     """
-    registros_directory = "src/registros/WinogradOriginal"
+    registros_directory = "src/registros/StrassenNaiv"
     if not os.path.exists(registros_directory):
         os.makedirs(registros_directory)
 
@@ -53,7 +55,8 @@ def multiplicar_matrices(matrices_filenames):
        # resultado = NaivOnArray.multiply(matriz1, matriz2)  # Multiplicar matrices
        # resultado = NaivLoopUnrollingTwo.multiply(matriz1, matriz2)
        # resultado = NaivLoopUnrollingFour.multiply(matriz1, matriz2)
-        resultado = WinogradOriginal.multiply(matriz1,matriz2)
+       # resultado = WinogradOriginal.multiply(matriz1,matriz2)
+        resultado = StrassenNaive.multiply(matriz1,matriz2)
         end_time = time.time()
         execution_time = (end_time - start_time) * 1000  # Convertir a milisegundos
 
@@ -69,7 +72,7 @@ def multiplicar_matrices(matrices_filenames):
 
 def main():
     # Directorio para guardar los archivos de matrices
-    directory = "src/algoritmos/WinogradOriginal"
+    directory = "src/algoritmos/StrassenNaiv"
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -83,7 +86,7 @@ def main():
     multiplicar_matrices(matrices_filenames)
 
     # Generar gráfico de barras con los tiempos de ejecución
-    algorithm = "WinogradOriginal"
+    algorithm = "StrassenNaiv"
     ChartGenerator.plot_execution_times(algorithm, sizes)
 
 
