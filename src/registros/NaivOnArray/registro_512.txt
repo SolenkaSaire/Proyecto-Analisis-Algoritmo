@@ -1,3 +1,3 @@
 Tamaño de la matriz: 512x512
-Tiempo de ejecución: 41604.78639602661 milisegundos
+Tiempo de ejecución: 25440.27352333069 milisegundos
 

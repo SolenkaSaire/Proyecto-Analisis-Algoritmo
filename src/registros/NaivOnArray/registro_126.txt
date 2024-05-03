@@ -1,0 +1,3 @@
+Tamaño de la matriz: 126x126
+Tiempo de ejecución: 276.5781879425049 milisegundos
+

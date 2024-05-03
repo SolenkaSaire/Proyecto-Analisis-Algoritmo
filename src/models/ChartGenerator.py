@@ -25,12 +25,16 @@ class ChartGenerator:
 
         # Crear el gráfico de barras
         plt.figure(figsize=(10, 6))  # Tamaño del gráfico
-        plt.bar(sizes, execution_times, color='blue',  width=15)
+        plt.bar(sizes, execution_times, color='red',  width=15)
         plt.xlabel('Tamaño (n) de la matriz')
         plt.ylabel('Tiempo de ejecución (ms)')
         plt.title(f'Tiempos de ejecución del algoritmo {algorithm} para cada caso de prueba')
         plt.xticks(sizes)
         plt.grid(True)
+         #Guardar la figura en el directorio "imágenes"
+        if not os.path.exists("imagenes"):
+            os.makedirs("imagenes")
+        plt.savefig(f"src/imagenes/{algorithm}_execution_times.png")
         plt.show()
 
     @staticmethod
@@ -64,4 +68,9 @@ class ChartGenerator:
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.grid(True)
+
+        #Guardar la figura en el directorio "imágenes"
+        if not os.path.exists("imagenes"):
+            os.makedirs("imagenes")
+        plt.savefig(f"src/imagenes/General.png")
         plt.show()
