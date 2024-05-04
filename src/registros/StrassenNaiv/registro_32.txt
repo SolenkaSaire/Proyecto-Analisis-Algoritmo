@@ -1,3 +1,0 @@
-Tamaño de la matriz: 32x32
-Tiempo de ejecución: 7.042884826660156 milisegundos
-

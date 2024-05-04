@@ -1,11 +1,13 @@
+import math
+
 class StrassenNaive:
     @staticmethod
-    def multiply(A, B):
+    def multiply(A, B, Result, N, P, M):
+        print("StrassenNaive")
+        print(N)
+        print(P)
         # Obtener las dimensiones de las matrices
-        N = len(A)
-        P = len(A[0])
         P2 = len(B)
-        M = len(B[0])
         if P != P2:
             raise ValueError("Las dimensiones interiores de las matrices A y B deben coincidir.")
 
@@ -15,7 +17,7 @@ class StrassenNaive:
             MaxSize = 16  # Fijar un mínimo para que el algoritmo funcione correctamente
 
         # Calcular k y m basados en MaxSize
-        k = int(StrassenNaive.log2(MaxSize)) - 4
+        k = int(math.log2(MaxSize)) - 4
         m = int(MaxSize * 2**(-k)) + 1
         NewSize = m * (2**k)
 
@@ -35,7 +37,6 @@ class StrassenNaive:
         AuxResult = StrassenNaive.strassen_naiv_step(NewA, NewB, NewSize, m)
 
         # Extraer el resultado en el tamaño original
-        Result = StrassenNaive.crear_matriz(N, M)
         for i in range(N):
             for j in range(M):
                 Result[i][j] = AuxResult[i][j]
@@ -46,16 +47,6 @@ class StrassenNaive:
     def crear_matriz(N, M):
         matriz = [[0 for _ in range(M)] for _ in range(N)]
         return matriz
-
-    @staticmethod
-    def log2(x):
-        n = 100000
-        return StrassenNaive.ln(x) / StrassenNaive.ln(2)
-
-    @staticmethod
-    def ln(x):
-        n = 100000
-        return n * ((x ** (1 / n)) - 1)
 
     @staticmethod
     def strassen_naiv_step(A, B, N, m):

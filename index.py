@@ -1,62 +1,104 @@
+import sys
 from src.models.WinogradScaled import WinogradScaled
 from src.models.StrassenNaiv import StrassenNaive
 from src.models.DocumentoMatrices import LeerMatriz, GeneradorMatrices
 from src.models.ChartGenerator import ChartGenerator
-from src.models.NaivOnArray import NaivOnArray
-from src.models.NaivLoopUnrollingTwo import NaivLoopUnrollingTwo
-from src.models.NaivLoopUnrollingFour import NaivLoopUnrollingFour
-from src.models.WinogradOriginal import WinogradOriginal
+from src.models.TiempoEjecucion import TiempoEjecucion, AlgoritmoMultiplicacion
+
+import numpy as np 
 import os
 import time
 
-def generar_matrices(directory, sizes):
-    """
-    Genera y guarda matrices en el directorio especificado.
+def generar_matrices():
+    sizes = [2**n for n in range(4, 12)]  # Tamaños de matrices de 16 hasta 2048
+    directory = "src/files_matrices"
 
-    Args:
-    - directory: Directorio donde se guardarán las matrices.
-    - sizes: Lista de tamaños de las matrices a generar.
+    # Generar y guardar la lista devuelta
+    GeneradorMatrices.generate_matrices(directory, sizes)
+    
 
-    Returns:
-    - List[str]: Lista de nombres de archivos de las matrices generadas.
-    """
-    matrices_filenames = []
 
-    for n in sizes:
-        filename_aux = f"{directory}/matriz_{n}_num1.txt"
-        matrices_filenames.append(filename_aux)
-        for number in range(1, 3):  # Crear dos matrices de cada tamaño para multiplicar entre sí
-            filename = f"{directory}/matriz_{n}_num{number}.txt"
-            GeneradorMatrices.generate_matrix_to_file(n, filename)
-            print(f"Matriz {number} de tamaño {n}x{n} guardada en {filename}")
+def main():
+    # Algoritmo a ejecutar
+    #algorithm = "NaivOnArray"
+    #algorithm = "NaivLoopUnrollingTwo"
+    #algorithm = "NaivLoopUnrollingFour"
+    #algorithm = "WinogradOriginal"
+    #algorithm = "WinogradScaled"
+    #algorithm = "StrassenNaive"
+    #algorithm = "StrassenWinograd"
+    #algorithm = "III3SequantialBlock"
+    #algorithm = "III4ParallelBlock"
+    #algorithm = "IV3SequentialBlock"
+    #algorithm = "IV4ParallelBlock"
+    #algorithm = "V3SequentialBlock"
+    #algorithm = "V4ParallelBlock"
 
-    print("Todas las matrices han sido generadas y almacenadas.")
-    return matrices_filenames
 
+    # Generar y guardar matrices
+    #generar_matrices()
+
+    # Leer nombres de archivos de matrices
+    #matrices_filenames = GeneradorMatrices.read_matrices_names("src/files_matrices")
+
+    # Multiplicar las matrices y registrar el tiempo de ejecución
+    #AlgoritmoMultiplicacion.ejecutar_algoritmo(matrices_filenames, algorithm)
+
+    # Generar gráfico de barras con los tiempos de ejecución
+    #ChartGenerator.plot_execution_times(algorithm)
+
+
+    # Directorio de registros
+    #registros_directory = "src/registros"
+
+    # Obtener el tiempo de ejecución máximo de cada algoritmo
+    max_times = ChartGenerator.get_max_execution_time()
+
+    # Generar gráfico de barras con los tiempos de ejecución máximo
+    ChartGenerator.plot_max_execution_times(max_times)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+"""
 def multiplicar_matrices(matrices_filenames):
-    """
-    Multiplica las matrices especificadas y registra el tiempo de ejecución.
-
-    Args:
-    - matrices_filenames: Lista de nombres de archivos de las matrices a multiplicar.
-    """
-    registros_directory = "src/registros/StrassenNaiv"
+    # Explicación de los parámetros:
+    # - matrizA: Matriz de tamaño NxP (N filas, P columnas)
+    # - matrizB: Matriz de tamaño PxM (P filas, M columnas)
+    # - matrizC: Matriz de resultado, de tamaño NxM (N filas, M columnas)
+    # - N: Número de filas de la matrizA y matrizC
+    # - P: Número de columnas de matrizA y número de filas de matrizB
+    # - M: Número de columnas de la matrizB y matrizC
+    registros_directory = "src/file_cases"
     if not os.path.exists(registros_directory):
         os.makedirs(registros_directory)
 
     for filename in matrices_filenames:
-        matriz1 = LeerMatriz.load_matrix_from_file(filename)
-        n = len(matriz1)
-        # Obtener el nombre de la otra matriz del mismo tamaño
+        # Obtener la matrizA de un archivo
+        matrizA = LeerMatriz.load_matrix_from_file(filename)
+        n = len(matrizA)
+        # Obtener la mtrizB de un archivo
         filename2 = filename.replace("num1", "num2")
-        matriz2 = LeerMatriz.load_matrix_from_file(filename2)
-        
+        matrizB = LeerMatriz.load_matrix_from_file(filename2)
+        # Matriz resultado
+        matrizC = np.zeros((n, n), dtype=int)
+
+        #Calcular tiempo de ejecucion
         start_time = time.time()
-       # resultado = NaivOnArray.multiply(matriz1, matriz2)  # Multiplicar matrices
-       # resultado = NaivLoopUnrollingTwo.multiply(matriz1, matriz2)
-       # resultado = NaivLoopUnrollingFour.multiply(matriz1, matriz2)
-       # resultado = WinogradOriginal.multiply(matriz1,matriz2)
-        resultado = StrassenNaive.multiply(matriz1,matriz2)
+
+        # Multiplicar las matrices
+
+       # resultado = NaivOnArray.multiply(matrizA, matrizB, matrizC, n, n, n ) 
+       # resultado = NaivLoopUnrollingTwo.multiply(matrizA, matrizB, matrizC, n, n, n)
+       # resultado = NaivLoopUnrollingFour.multiply(matrizA, matrizB, matrizC, n, n, n)
+       # resultado = WinogradOriginal.multiply(matrizA, matrizB, matrizC, n, n, n)
+        resultado = StrassenNaive.multiply(matrizA, matrizB, matrizC, n, n, n)
+
         end_time = time.time()
         execution_time = (end_time - start_time) * 1000  # Convertir a milisegundos
 
@@ -66,40 +108,4 @@ def multiplicar_matrices(matrices_filenames):
             file.write(f"Tiempo de ejecución: {execution_time} milisegundos\n\n")
 
         print(f"Matrices de tamaño {n}x{n} multiplicadas. Tiempo de ejecución: {execution_time} ms")
-
-
-
-
-def main():
-    # Directorio para guardar los archivos de matrices
-    directory = "src/algoritmos/StrassenNaiv"
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    # Tamaños de las matrices elegidos manualmente, potencias de 2
-    sizes = [16, 32, 64, 128, 256, 512]  
-
-    # Generar y guardar matrices
-    matrices_filenames = generar_matrices(directory, sizes)
-
-    # Multiplicar las matrices y registrar el tiempo de ejecución
-    multiplicar_matrices(matrices_filenames)
-
-    # Generar gráfico de barras con los tiempos de ejecución
-    algorithm = "StrassenNaiv"
-    ChartGenerator.plot_execution_times(algorithm, sizes)
-
-
-    # Directorio de registros
-    registros_directory = "src/registros"
-
-    # Obtener el tiempo de ejecución máximo de cada algoritmo
-    max_times = ChartGenerator.get_max_execution_time(registros_directory)
-
-    # Generar gráfico de barras con los tiempos de ejecución máximo
-    ChartGenerator.plot_max_execution_times(max_times)
-
-if __name__ == "__main__":
-    main()
-
-
+"""

@@ -4,50 +4,61 @@ import os
 
 class ChartGenerator:
     @staticmethod
-    def plot_execution_times(algorithm, sizes):
-        """
-        Crea un diagrama de barras con el tiempo de ejecución de un algoritmo para cada tamaño de matriz.
+    def plot_execution_times(algorithm):
+        # Leer los datos del archivo
+        sizes = []
+        times = []
+        with open(os.path.join("src", "file_cases", "execution_times.txt"), 'r') as file:
+            for line in file:
+                size, algo, time = line.strip().split('\t')
+                if algo == algorithm:
+                    sizes.append(int(size))
+                    times.append(float(time))
 
-        Args:
-        - algorithm: Nombre del algoritmo.
-        - sizes: Lista de tamaños de las matrices.
-        """
-        registros_directory = f"src/registros/{algorithm}"
-        execution_times = []
+        # Ordenar los datos por tamaño de matriz
+        sizes, times = zip(*sorted(zip(sizes, times)))
 
-        for size in sizes:
-            filename = f"{registros_directory}/registro_{size}.txt"
-            with open(filename, "r") as file:
-                lines = file.readlines()
-                # Obtener el tiempo de ejecución de la segunda línea
-                execution_time = float(lines[1].split(": ")[1].strip().split(" ")[0])
-                execution_times.append(execution_time)
+        # Crear el gráfico de barras con barras más gruesas
+        plt.figure(figsize=(12, 7))
+        bars = plt.bar(sizes, times, width=17)#color='skyblue'
 
-        # Crear el gráfico de barras
-        plt.figure(figsize=(10, 6))  # Tamaño del gráfico
-        plt.bar(sizes, execution_times, color='blue',  width=15)
         plt.xlabel('Tamaño (n) de la matriz')
         plt.ylabel('Tiempo de ejecución (ms)')
-        plt.title(f'Tiempos de ejecución del algoritmo {algorithm} para cada caso de prueba')
-        plt.xticks(sizes)
+        plt.title(f'Tiempos de ejecución para el algoritmo {algorithm}')
+
+        # Personalizar las etiquetas del eje x
+        plt.xticks(sizes, [str(s) for s in sizes])
+
+        # Establecer la escala lineal en el eje x
+        plt.xscale('linear')
+
         plt.grid(True)
+
+        # Agregar etiquetas encima de cada barra
+        for bar, size in zip(bars, sizes):
+            plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), str(size), ha='center', va='bottom')
+    
+        # Mostrar el gráfico
         plt.show()
 
+
     @staticmethod
-    def get_max_execution_time(directory):
+    def get_max_execution_time():
         max_times = {}
-        for algorithm in os.listdir(directory):
-            algorithm_dir = os.path.join(directory, algorithm)
-            if os.path.isdir(algorithm_dir):
-                max_time = 0
-                for filename in os.listdir(algorithm_dir):
-                    filepath = os.path.join(algorithm_dir, filename)
-                    if os.path.isfile(filepath):
-                        with open(filepath, "r") as file:
-                            lines = file.readlines()
-                            execution_time = float(lines[1].split(": ")[1].split(" ")[0])
-                            max_time = max(max_time, execution_time)
-                max_times[algorithm] = max_time
+        with open("src/file_cases/execution_times.txt", 'r') as file:
+            next(file)  # Omitir la primera línea que contiene los encabezados
+            for line in file:
+                if line.strip():  # Asegurarse de que la línea no esté vacía
+                    size, algorithm, time = line.strip().split('\t')
+                    print("el tiempo es "+time)
+                    time = float(time)
+                    
+                    # Actualizar el máximo tiempo para cada algoritmo
+                    if algorithm in max_times:
+                        if time > max_times[algorithm]:
+                            max_times[algorithm] = time
+                    else:
+                        max_times[algorithm] = time
         return max_times
 
 

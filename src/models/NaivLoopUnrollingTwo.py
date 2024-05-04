@@ -1,19 +1,24 @@
 class NaivLoopUnrollingTwo:
     @staticmethod
-    def multiply(a, b):
-        size = len(a)
-        result = [[0] * size for _ in range(size)]
+    def multiply(matrizA, matrizB, matrizC, N, P, M):
+        for i in range(N):
+            for j in range(M):
+                aux = 0
+                if P % 2 == 0:
+                    for k in range(0, P, 2):
+                        aux += matrizA[i][k] * matrizB[k][j] + matrizA[i][k + 1] * matrizB[k + 1][j]
+                else:
+                    PP = P - 1
+                    for k in range(0, PP, 2):
+                        aux += matrizA[i][k] * matrizB[k][j] + matrizA[i][k + 1] * matrizB[k + 1][j]
+                    aux += matrizA[i][PP] * matrizB[PP][j]
+                matrizC[i][j] = aux
 
-        for i in range(0, size, 2):
-            for j in range(0, size, 2):
-                for k in range(0, size, 2):
-                    sum1 = a[i][k] * b[k][j] + a[i][k + 1] * b[k + 1][j]
-                    sum2 = a[i][k] * b[k][j + 1] + a[i][k + 1] * b[k + 1][j + 1]
-                    sum3 = a[i + 1][k] * b[k][j] + a[i + 1][k + 1] * b[k + 1][j]
-                    sum4 = a[i + 1][k] * b[k][j + 1] + a[i + 1][k + 1] * b[k + 1][j + 1]
-                    result[i][j] += sum1
-                    result[i][j + 1] += sum2
-                    result[i + 1][j] += sum3
-                    result[i + 1][j + 1] += sum4
+    # Explicación de los parámetros:
+    # - matrizA: Matriz de tamaño NxP (N filas, P columnas)
+    # - matrizB: Matriz de tamaño PxM (P filas, M columnas)
+    # - matrizC: Matriz de resultado, de tamaño NxM (N filas, M columnas)
+    # - N: Número de filas de la matrizA y matrizC
+    # - P: Número de columnas de matrizA y número de filas de matrizB
+    # - M: Número de columnas de la matrizB y matrizC
 
-        return result

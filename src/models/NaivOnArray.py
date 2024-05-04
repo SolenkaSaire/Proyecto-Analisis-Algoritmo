@@ -1,17 +1,17 @@
 class NaivOnArray:
     @staticmethod
-    def multiply(a, b):
-        rowsA = len(a)
-        colsA = len(a[0])
-        rowsB = len(b)
-        colsB = len(b[0])
+    def multiply(matrizA, matrizB, matrizC, N, P, M):
+        for i in range(N):
+            for j in range(M):
+                matrizC[i][j] = 0
+                for k in range(P):
+                    matrizC[i][j] += matrizA[i][k] * matrizB[k][j]
+        return matrizC
 
-        if colsA != rowsB:
-            raise ValueError("Las matrices no se pueden multiplicar. El número de columnas de la primera matriz debe ser igual al número de filas de la segunda matriz.")
-
-        c = [[0] * colsB for _ in range(rowsA)]
-        for i in range(rowsA):
-            for j in range(colsB):
-                for k in range(colsA):
-                    c[i][j] += a[i][k] * b[k][j]
-        return c
+# Explicación de los parámetros:
+# - matrizA: Matriz de tamaño NxP (N filas, P columnas)
+# - matrizB: Matriz de tamaño PxM (P filas, M columnas)
+# - matrizC: Matriz de resultado, de tamaño NxM (N filas, M columnas)
+# - N: Número de filas de la matrizA y matrizC
+# - P: Número de columnas de matrizA y número de filas de matrizB
+# - M: Número de columnas de la matrizB y matrizC

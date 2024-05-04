@@ -1,3 +1,0 @@
-Tamaño de la matriz: 64x64
-Tiempo de ejecución: 129.41956520080566 milisegundos
-

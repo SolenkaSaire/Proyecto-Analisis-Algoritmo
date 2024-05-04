@@ -1,3 +1,0 @@
-Tamaño de la matriz: 16x16
-Tiempo de ejecución: 6.865501403808594 milisegundos
-

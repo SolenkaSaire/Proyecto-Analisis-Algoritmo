@@ -1,3 +1,0 @@
-Tamaño de la matriz: 1024x1024
-Tiempo de ejecución: 411047.4143028259 milisegundos
-

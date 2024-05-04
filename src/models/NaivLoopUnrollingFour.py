@@ -1,15 +1,37 @@
 class NaivLoopUnrollingFour:
     @staticmethod
-    def multiply(a, b):
-        size = len(a)
-        result = [[0 for _ in range(size)] for _ in range(size)]
+    def multiply(A, B, Result, N, P, M):
+        for i in range(N):
+            for j in range(M):
+                aux = 0
+                if P % 4 == 0:
+                    for k in range(0, P, 4):
+                        aux += A[i][k] * B[k][j] + A[i][k+1] * B[k+1][j] + A[i][k+2] * B[k+2][j] + A[i][k+3] * B[k+3][j]
+                elif P % 4 == 1:
+                    PP = P - 1
+                    for k in range(0, PP, 4):
+                        aux += A[i][k] * B[k][j] + A[i][k+1] * B[k+1][j] + A[i][k+2] * B[k+2][j] + A[i][k+3] * B[k+3][j]
+                    aux += A[i][PP] * B[PP][j]
+                elif P % 4 == 2:
+                    PP = P - 2
+                    PPP = P - 1
+                    for k in range(0, PP, 4):
+                        aux += A[i][k] * B[k][j] + A[i][k+1] * B[k+1][j] + A[i][k+2] * B[k+2][j] + A[i][k+3] * B[k+3][j]
+                    aux += A[i][PP] * B[PP][j] + A[i][PPP] * B[PPP][j]
+                else:
+                    PP = P - 3
+                    PPP = P - 2
+                    PPPP = P - 1
+                    for k in range(0, PP, 4):
+                        aux += A[i][k] * B[k][j] + A[i][k+1] * B[k+1][j] + A[i][k+2] * B[k+2][j] + A[i][k+3] * B[k+3][j]
+                    aux += A[i][PP] * B[PP][j] + A[i][PPP] * B[PPP][j] + A[i][PPPP] * B[PPPP][j]
+                Result[i][j] = aux
 
-        for i in range(0, size, 4):
-            for j in range(0, size, 4):
-                for k in range(0, size, 4):
-                    for i1 in range(i, min(i + 4, size)):
-                        for j1 in range(j, min(j + 4, size)):
-                            for k1 in range(k, min(k + 4, size)):
-                                result[i1][j1] += a[i1][k1] * b[k1][j1]
+# Explicación de los parámetros:
+# - A: Matriz de tamaño NxP (N filas, P columnas)
+# - B: Matriz de tamaño PxM (P filas, M columnas)
+# - Result: Matriz de resultado, de tamaño NxM (N filas, M columnas)
+# - N: Número de filas de la matrizA y matrizC
+# - P: Número de columnas de matrizA y número de filas de matrizB
+# - M: Número de columnas de la matrizB y matrizC
 
-        return result
