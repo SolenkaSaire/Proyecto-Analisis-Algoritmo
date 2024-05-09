@@ -67,6 +67,7 @@ if __name__ == "__main__":
 
 """
 def multiplicar_matrices(matrices_filenames):
+<<<<<<< HEAD
     # Explicación de los parámetros:
     # - matrizA: Matriz de tamaño NxP (N filas, P columnas)
     # - matrizB: Matriz de tamaño PxM (P filas, M columnas)
@@ -75,6 +76,15 @@ def multiplicar_matrices(matrices_filenames):
     # - P: Número de columnas de matrizA y número de filas de matrizB
     # - M: Número de columnas de la matrizB y matrizC
     registros_directory = "src/file_cases"
+=======
+    """
+    Multiplica las matrices especificadas y registra el tiempo de ejecución.
+
+    Args:
+    - matrices_filenames: Lista de nombres de archivos de las matrices a multiplicar.
+    """
+    registros_directory = "src/registros/NaivOnArray"
+>>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
     if not os.path.exists(registros_directory):
         os.makedirs(registros_directory)
 
@@ -90,6 +100,7 @@ def multiplicar_matrices(matrices_filenames):
 
         #Calcular tiempo de ejecucion
         start_time = time.time()
+<<<<<<< HEAD
 
         # Multiplicar las matrices
 
@@ -99,6 +110,13 @@ def multiplicar_matrices(matrices_filenames):
        # resultado = WinogradOriginal.multiply(matrizA, matrizB, matrizC, n, n, n)
         resultado = StrassenNaive.multiply(matrizA, matrizB, matrizC, n, n, n)
 
+=======
+        resultado = NaivOnArray.multiply(matriz1, matriz2)  # Multiplicar matrices
+       # resultado = NaivLoopUnrollingTwo.multiply(matriz1, matriz2)
+       # resultado = NaivLoopUnrollingFour.multiply(matriz1, matriz2)
+       # resultado = WinogradOriginal.multiply(matriz1,matriz2)
+       # resultado = StrassenNaive.multiply(matriz1,matriz2)
+>>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
         end_time = time.time()
         execution_time = (end_time - start_time) * 1000  # Convertir a milisegundos
 
@@ -108,4 +126,44 @@ def multiplicar_matrices(matrices_filenames):
             file.write(f"Tiempo de ejecución: {execution_time} milisegundos\n\n")
 
         print(f"Matrices de tamaño {n}x{n} multiplicadas. Tiempo de ejecución: {execution_time} ms")
+<<<<<<< HEAD
 """
+=======
+
+
+
+
+def main():
+    # Directorio para guardar los archivos de matrices
+    directory = "src/matrices/NaivOnArray"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    # Tamaños de las matrices elegidos manualmente, potencias de 2
+    sizes = [12, 32, 64, 126, 256, 512]  
+
+    # Generar y guardar matrices
+    matrices_filenames = generar_matrices(directory, sizes)
+
+    # Multiplicar las matrices y registrar el tiempo de ejecución
+    multiplicar_matrices(matrices_filenames)
+
+    # Generar gráfico de barras con los tiempos de ejecución
+    algorithm = "NaivOnArray"
+    ChartGenerator.plot_execution_times(algorithm, sizes)
+
+
+    # Directorio de registros
+    registros_directory = "src/registros"
+
+    # Obtener el tiempo de ejecución máximo de cada algoritmo
+    max_times = ChartGenerator.get_max_execution_time(registros_directory)
+
+    # Generar gráfico de barras con los tiempos de ejecución máximo
+    ChartGenerator.plot_max_execution_times(max_times)
+
+if __name__ == "__main__":
+    main()
+
+
+>>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
