@@ -58,8 +58,8 @@ class GeneradorMatrices:
         # Eliminar los tamaños de matriz 512, 1024 y 2048
         matrices_filenames_filtered = []
         for size, filename in zip(matriz_sizes, matrices_filenames):
-            if size not in [ 1024, 2048]:
-                matrices_filenames_filtered.append(filename)
+        #    if size not in [ 512, 2048]:
+            matrices_filenames_filtered.append(filename)
 
         # Ordenar las matrices restantes de menor a mayor
         matrices_filenames_sorted = [x for _, x in sorted(zip(matriz_sizes, matrices_filenames_filtered))]

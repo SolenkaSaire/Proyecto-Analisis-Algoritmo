@@ -20,7 +20,7 @@ def generar_matrices():
 
 def main():
     # Algoritmo a ejecutar
-    #algorithm = "NaivOnArray"
+    algorithm = ["NaivOnArray", "NaivLoopUnrollingTwo", "NaivLoopUnrollingFour", "WinogradOriginal", "WinogradScaled"]
     #algorithm = "NaivLoopUnrollingTwo"
     #algorithm = "NaivLoopUnrollingFour"
     #algorithm = "WinogradOriginal"
@@ -39,13 +39,13 @@ def main():
     #generar_matrices()
 
     # Leer nombres de archivos de matrices
-    #matrices_filenames = GeneradorMatrices.read_matrices_names("src/files_matrices")
-
+    matrices_filenames = GeneradorMatrices.read_matrices_names("src/files_matrices")
     # Multiplicar las matrices y registrar el tiempo de ejecución
-    #AlgoritmoMultiplicacion.ejecutar_algoritmo(matrices_filenames, algorithm)
 
-    # Generar gráfico de barras con los tiempos de ejecución
-    #ChartGenerator.plot_execution_times(algorithm)
+    for algoritmo in algorithm:
+        AlgoritmoMultiplicacion.ejecutar_algoritmo(matrices_filenames, algoritmo)
+        # Generar gráfico de barras con los tiempos de ejecución
+        ChartGenerator.plot_execution_times(algoritmo)
 
 
     # Directorio de registros
