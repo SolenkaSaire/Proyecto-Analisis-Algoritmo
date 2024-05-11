@@ -12,6 +12,9 @@ from src.models.IV3SequentialBlock import IV3SequentialBlock
 from src.models.IV4ParallelBlock import IV4ParallelBlock
 from src.models.V3SequentialBlock import V3SequentialBlock
 from src.models.V4ParallelBlock import V4ParallelBlock
+from src.models.IV5EnhancedParallelBlock import IV5EnhancedParallelBlock
+from src.models.III5EnhancedParallelBlock import III5EnhancedParallelBlock
+
 
 
 import os

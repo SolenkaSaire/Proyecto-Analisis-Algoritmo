@@ -22,12 +22,6 @@ class ChartGenerator:
         plt.figure(figsize=(12, 7))
         bars = plt.bar(sizes, times, width=5, color='skyblue')
 
-<<<<<<< HEAD
-=======
-        # Crear el gráfico de barras
-        plt.figure(figsize=(10, 6))  # Tamaño del gráfico
-        plt.bar(sizes, execution_times, color='red',  width=15)
->>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
         plt.xlabel('Tamaño (n) de la matriz')
         plt.ylabel('Tiempo de ejecución (ms)')
         plt.title(f'Tiempos de ejecución para el algoritmo {algorithm}')
@@ -39,7 +33,6 @@ class ChartGenerator:
         plt.xscale('linear')
 
         plt.grid(True)
-<<<<<<< HEAD
         # Guardar el gráfico como imagen
         if not os.path.exists("images"):
             os.makedirs("images")
@@ -51,13 +44,6 @@ class ChartGenerator:
         # Mostrar el gráfico
         #plt.show()
 
-=======
-         #Guardar la figura en el directorio "imágenes"
-        if not os.path.exists("imagenes"):
-            os.makedirs("imagenes")
-        plt.savefig(f"src/imagenes/{algorithm}_execution_times.png")
-        plt.show()
->>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
 
     @staticmethod
     def get_max_execution_time():
@@ -93,18 +79,9 @@ class ChartGenerator:
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.grid(True)
-<<<<<<< HEAD
         # Guardar el gráfico como imagen
         if not os.path.exists("images"):
             os.makedirs("images")
         plt.savefig(f"src/images/General.png")
         
         #plt.show()
-=======
-
-        #Guardar la figura en el directorio "imágenes"
-        if not os.path.exists("imagenes"):
-            os.makedirs("imagenes")
-        plt.savefig(f"src/imagenes/General.png")
-        plt.show()
->>>>>>> 487a6519b80bcc3f213faed1887168c816d66504
