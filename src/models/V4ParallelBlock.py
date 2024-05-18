@@ -16,8 +16,11 @@ class V4ParallelBlock:
             bsize (int): Tamaño del bloque.
 
         """
+        blocks = [(i1, j1, k1) for i1 in range(0, size, bsize)
+                             for j1 in range(0, size, bsize)
+                             for k1 in range(0, size, bsize)]
         with ThreadPoolExecutor() as executor:
-            executor.map(lambda _i: V4ParallelBlock._calculate_block(matrizA, matrizB, matrizC, size, bsize), range(1))
+            executor.map(lambda b: V4ParallelBlock._calculate_block(matrizA, matrizB, matrizC, size, bsize, b), blocks)
 
 
 
