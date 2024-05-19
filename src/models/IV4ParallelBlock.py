@@ -4,6 +4,7 @@ from multiprocessing import Pool
 
 class IV4ParallelBlock:
 
+
     @staticmethod
     def multiply(matrizA, matrizB, matrizC, size, bsize, aux):
         """
@@ -17,18 +18,23 @@ class IV4ParallelBlock:
             bsize (int): Tamaño del bloque.
 
         """
-        def multiply_block(_):
-            for i1 in range(0, size, bsize):
-                for j1 in range(0, size, bsize):
-                    for k1 in range(0, size, bsize):
-                        for i in range(i1, min(i1 + bsize, size)):
-                            for j in range(j1, min(j1 + bsize, size)):
-                                for k in range(k1, min(k1 + bsize, size)):
-                                    matrizA[i][k] += matrizB[i][j] * matrizC[j][k]
+        def calculate_block(i1):
+            """
+            Calcula el producto de matrices para un bloque específico.
 
-        with Pool() as pool:
-            pool.map(multiply_block, range(size // bsize))
+            Args:
+                i1 (int): Índice del bloque en la dimensión i.
 
+            """
+            for j1 in range(0, size, bsize):
+                for k1 in range(0, size, bsize):
+                    for i in range(i1 * bsize, min((i1 + 1) * bsize, size)):
+                        for j in range(j1, min(j1 + bsize, size)):
+                            for k in range(k1, min(k1 + bsize, size)):
+                                matrizC[i][k] += matrizA[i][j] * matrizB[j][k]
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(calculate_block, range(size // bsize))
 
 
 # Ejemplo de uso:
