@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool
 
 
 class V4ParallelBlock:
@@ -16,31 +17,22 @@ class V4ParallelBlock:
             bsize (int): Tamaño del bloque.
 
         """
-        blocks = [(i1, j1, k1) for i1 in range(0, size, bsize)
-                             for j1 in range(0, size, bsize)
-                             for k1 in range(0, size, bsize)]
-        with ThreadPoolExecutor() as executor:
-            executor.map(lambda b: V4ParallelBlock._calculate_block(matrizA, matrizB, matrizC, size, bsize, b), blocks)
+        def multiply_block(_):
+            for i1 in range(0, size, bsize):
+                for j1 in range(0, size, bsize):
+                    for k1 in range(0, size, bsize):
+                        for i in range(i1, min(i1 + bsize, size)):
+                            for j in range(j1, min(j1 + bsize, size)):
+                                for k in range(k1, min(k1 + bsize, size)):
+                                    matrizA[k][i] += matrizB[k][j] * matrizC[j][i]
 
-
-
-    @staticmethod
-    def _calculate_block(matrizA, matrizB, matrizC, size, bsize):
-        """
-        Calcula la multiplicación de matrices para un bloque específico.
-
-        Args:
-            matrizA (list): Matriz A.
-            matrizB (list): Matriz B.
-            matrizC (list): Matriz C, donde se almacenará el resultado.
-            size (int): Tamaño de las matrices.
-            bsize (int): Tamaño del bloque.
-
-        """
-        for i1 in range(0, size, bsize):
-            for j1 in range(0, size, bsize):
-                for k1 in range(0, size, bsize):
-                    for i in range(i1, min(i1 + bsize, size)):
-                        for j in range(j1, min(j1 + bsize, size)):
-                            for k in range(k1, min(k1 + bsize, size)):
-                                matrizC[k][i] += matrizA[k][j] * matrizB[j][i]
+        with Pool() as pool:
+            pool.map(multiply_block, range(1))
+        
+# Ejemplo de uso:
+# Define las matrices A, B y C, el tamaño (size) y el tamaño del bloque (bsize)
+# Llama a la función multiply con los parámetros adecuados
+# matrizA, matrizB y matrizC deben ser matrices de tamaño adecuado
+# size es el tamaño de las matrices
+# bsize es el tamaño del bloque
+# aux es un parámetro adicional (no se utiliza en el código proporcionado)
